@@ -2,6 +2,7 @@
 	"name": "blocks-highlighter",
 	"displayName": "blocks-highlighter",
 	"description": "Higlights blocks",
+	"publisher": "megabyte",
 	"version": "0.0.1",
 	"engines": {
 		"vscode": "^1.43.0"
@@ -10,16 +11,60 @@
 		"Other"
 	],
 	"activationEvents": [
-		"onCommand:extension.helloWorld"
+		"*"
 	],
 	"main": "./extension.js",
 	"contributes": {
-		"commands": [
-			{
-				"command": "extension.helloWorld",
-				"title": "Hello World"
+		"configuration": {
+			"type": "object",
+			"title": "Blocks-highlighter",
+			"properties": {
+				"blockshighlighter.blocks": {
+					"type": "array",
+					"description": "List of block to highlight",
+					"items": {
+						"type": "object",
+						"properties": {
+							"fileType": {
+								"type": "string",
+								"description": "Regexp to filter files to apply blocks searching."
+							},
+							"begin": {
+								"type": "string",
+								"description": "Regexp to detect beginning of block."
+							},
+							"end": {
+								"type": "string",
+								"description": "Regexp to detect ending of block"
+							},
+							"decorationRenderOptions": {
+								"type": "object",
+								"description": "Block styling options in format described here: https://code.visualstudio.com/api/references/vscode-api#DecorationRenderOptions"
+							}
+						}
+					},
+					"default": [{
+							"fileType": "\\.js$",
+							"begin": "^\\s*///\\s*#if EDITOR\\s*$",
+							"end": "^\\s*///\\s*#endif\\s*$",
+							"decorationRenderOptions": {
+								"isWholeLine": true,
+								"backgroundColor": "rgba(0,100,255,0.08)"
+							}
+						},
+						{
+							"fileType": "\\.js$",
+							"begin": "^\\s*///\\s*#if DEBUG\\s*$",
+							"end": "^\\s*///\\s*#endif\\s*$",
+							"decorationRenderOptions": {
+								"isWholeLine": true,
+								"backgroundColor": "rgba(0,255,100,0.08)"
+							}
+						}
+					]
+				}
 			}
-		]
+		}
 	},
 	"scripts": {
 		"lint": "eslint .",

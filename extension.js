@@ -1,30 +1,117 @@
-// The module 'vscode' contains the VS Code extensibility API
-// Import the module and reference it with the alias vscode in your code below
-const vscode = require('vscode');
 
-// this method is called when your extension is activated
-// your extension is activated the very first time the command is executed
+var vscode = require('vscode');
+var window = vscode.window;
+var workspace = vscode.workspace;
+var Range = vscode.Range;
+var Position = vscode.Position;
 
-/**
- * @param {vscode.ExtensionContext} context
- */
 function activate(context) {
 
-	// Use the console to output diagnostic information (console.log) and errors (console.error)
-	// This line of code will only be executed once when your extension is activated
-	console.log('Congratulations, your extension "blocks-highlighter" is now active!');
 
-	// The command has been defined in the package.json file
-	// Now provide the implementation of the command with  registerCommand
-	// The commandId parameter must match the command field in package.json
-	let disposable = vscode.commands.registerCommand('extension.helloWorld', function () {
-		// The code you place here will be executed every time your command is executed
+	var timeout = null;
 
-		// Display a message box to the user
-		vscode.window.showInformationMessage('Hello World!');
-	});
+	var blocks;
 
-	context.subscriptions.push(disposable);
+	init();
+
+
+	window.onDidChangeVisibleTextEditors(function () {
+		triggerUpdateDecorations();
+	}, null, context.subscriptions);
+
+	workspace.onDidChangeTextDocument(function () {
+		triggerUpdateDecorations();
+	}, null, context.subscriptions);
+
+	workspace.onDidChangeConfiguration(function () {
+		init();
+		triggerUpdateDecorations();
+	}, null, context.subscriptions);
+
+	function updateDecorations() {
+		timeout = null;
+
+		window.visibleTextEditors.forEach((editor) => {
+
+			var text = editor.document.getText();
+
+			let stack = [];
+
+			let a = text.split('\n');
+			let len = a.length;
+
+			let ranges = new Map();
+
+			for(let i = 0; i < len; i++) {
+				let lineTxt = a[i];
+
+				for(let block of blocks) {
+					if(block.fileType && !block.fileType(editor.document.fileName)) {
+						continue;
+					}
+					if(block.beginParser(lineTxt)) {
+						stack.push({
+							beginLine: i,
+							block
+						});
+					} else if(block.endParser(lineTxt)) {
+						
+						let latestBegin = stack[stack.length -1];
+						if(latestBegin && (latestBegin.block === block)) {
+							stack.pop();
+							if(!ranges.has(block)) {
+								ranges.set(block, []);
+							}
+							ranges.get(block).push(
+								{
+									range: new Range(new Position(latestBegin.beginLine, 0), new Position(i, 0))
+								});
+						}
+					}
+				}
+			}
+
+			for(let block of ranges.keys()) {
+				let range = ranges.get(block);
+				editor.setDecorations(block.decorationType, range);
+			}
+		});
+	}
+
+	function init() {
+		
+		const config = workspace.getConfiguration("blockshighlighter");
+		blocks = config.get("blocks").map((blockConfig) => {
+			return {
+				decorationType: window.createTextEditorDecorationType(blockConfig.decorationRenderOptions),
+				beginParser: compileExp(blockConfig.begin),
+				endParser: compileExp(blockConfig.end),
+				fileType: blockConfig.fileType && compileExp(blockConfig.fileType)
+			};
+		});
+	}
+
+	function compileExp(src) {
+		try {
+			let regExp = new RegExp(src);
+			return (txt) => {
+				return txt.search(regExp) >= 0;
+			};
+		} catch(er) {
+			return (txt) => {
+				return txt.indexOf(src) >= 0;
+			};
+		}
+	}
+
+	function triggerUpdateDecorations() {
+		timeout && clearTimeout(timeout);
+		timeout = setTimeout(updateDecorations, 0);
+	}
+
+	triggerUpdateDecorations();
+
+	//*/
 }
 exports.activate = activate;
 
@@ -34,4 +121,4 @@ function deactivate() {}
 module.exports = {
 	activate,
 	deactivate
-}
+};
