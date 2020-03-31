@@ -3,7 +3,8 @@
 	"displayName": "blocks-highlighter",
 	"description": "Higlights blocks",
 	"publisher": "VasiliyKostin",
-	"version": "0.0.1",
+	"repository": "https://github.com/Megabyteceer/blocks-highlighter",
+	"version": "1.0.0",
 	"engines": {
 		"vscode": "^1.43.0"
 	},
