@@ -6,14 +6,9 @@ var Range = vscode.Range;
 var Position = vscode.Position;
 
 function activate(context) {
-
-
 	var timeout = null;
-
 	var blocks;
-
 	init();
-
 
 	window.onDidChangeVisibleTextEditors(function () {
 		triggerUpdateDecorations();
@@ -54,6 +49,7 @@ function activate(context) {
 							beginLine: i,
 							block
 						});
+						break;
 					} else if(block.endParser(lineTxt)) {
 						
 						let latestBegin = stack[stack.length -1];
@@ -66,6 +62,7 @@ function activate(context) {
 								{
 									range: new Range(new Position(latestBegin.beginLine, 0), new Position(i, 0))
 								});
+							break;	
 						}
 					}
 				}
@@ -81,6 +78,15 @@ function activate(context) {
 	function init() {
 		
 		const config = workspace.getConfiguration("blockshighlighter");
+
+		if(blocks) {
+			for(let block of blocks) {
+				window.visibleTextEditors.forEach((editor) => {
+					editor.setDecorations(block.decorationType, []);
+				});
+			}
+		}
+
 		blocks = config.get("blocks").map((blockConfig) => {
 			return {
 				decorationType: window.createTextEditorDecorationType(blockConfig.decorationRenderOptions),
