@@ -2,7 +2,7 @@
 	"name": "blocks-highlighter",
 	"displayName": "blocks-highlighter",
 	"description": "Higlights blocks",
-	"publisher": "megabyte",
+	"publisher": "VasiliyKostin",
 	"version": "0.0.1",
 	"engines": {
 		"vscode": "^1.43.0"
@@ -43,25 +43,26 @@
 							}
 						}
 					},
-					"default": [{
-							"fileType": "\\.js$",
-							"begin": "^\\s*///\\s*#if EDITOR\\s*$",
-							"end": "^\\s*///\\s*#endif\\s*$",
-							"decorationRenderOptions": {
-								"isWholeLine": true,
-								"backgroundColor": "rgba(0,100,255,0.08)"
-							}
+					"default": [
+						{
+						  "fileType": "\\.js$",
+						  "begin": "^\\s*///\\s*#if EDITOR\\s*$",
+						  "end": "^\\s*///\\s*#endif\\s*$",
+						  "decorationRenderOptions": {
+							"isWholeLine": true,
+							"backgroundColor": "rgba(100,100,255,0.05)"
+						  }
 						},
 						{
-							"fileType": "\\.js$",
-							"begin": "^\\s*///\\s*#if DEBUG\\s*$",
-							"end": "^\\s*///\\s*#endif\\s*$",
-							"decorationRenderOptions": {
-								"isWholeLine": true,
-								"backgroundColor": "rgba(0,255,100,0.08)"
-							}
+						  "fileType": "\\.js$",
+						  "begin": "^\\s*///\\s*#if DEBUG\\s*$",
+						  "end": "^\\s*///\\s*#endif\\s*$",
+						  "decorationRenderOptions": {
+							"isWholeLine": true,
+							"backgroundColor": "rgba(100,255,100,0.05)"
+						  }
 						}
-					]
+					  ]
 				}
 			}
 		}
