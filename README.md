@@ -2,7 +2,7 @@
 
 *Blocks-Highlighter* allows you to add blocks highlights with custom color.
 The beginning and the ending of the block defined by regular expressions.
-Extension created especially to use with [ifdef-loader](https://github.com/nippur72/ifdef-loader) but useful i any other cases.
+Extension created especially to use with [ifdef-loader](https://github.com/nippur72/ifdef-loader) but useful in any other cases.
 
 ![blocks-highlighter screenshot](https://raw.githubusercontent.com/Megabyteceer/blocks-highlighter/master/screenshot.gif)
 
