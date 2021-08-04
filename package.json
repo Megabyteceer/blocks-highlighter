@@ -4,7 +4,7 @@
 	"description": "Higlights blocks",
 	"publisher": "VasiliyKostin",
 	"repository": "https://github.com/Megabyteceer/blocks-highlighter",
-	"version": "1.0.0",
+	"version": "1.1.0",
 	"engines": {
 		"vscode": "^1.43.0"
 	},
@@ -46,24 +46,24 @@
 					},
 					"default": [
 						{
-						  "fileType": "\\.js$",
-						  "begin": "^\\s*///\\s*#if EDITOR\\s*$",
-						  "end": "^\\s*///\\s*#endif\\s*$",
-						  "decorationRenderOptions": {
-							"isWholeLine": true,
-							"backgroundColor": "rgba(100,100,255,0.05)"
-						  }
+							"fileType": "\\.js$",
+							"begin": "^\\s*///\\s*#if EDITOR\\s*$",
+							"end": "^\\s*///\\s*#endif\\s*$",
+							"decorationRenderOptions": {
+								"isWholeLine": true,
+								"backgroundColor": "rgba(100,100,255,0.05)"
+							}
 						},
 						{
-						  "fileType": "\\.js$",
-						  "begin": "^\\s*///\\s*#if DEBUG\\s*$",
-						  "end": "^\\s*///\\s*#endif\\s*$",
-						  "decorationRenderOptions": {
-							"isWholeLine": true,
-							"backgroundColor": "rgba(100,255,100,0.05)"
-						  }
+							"fileType": "\\.js$",
+							"begin": "^\\s*///\\s*#if DEBUG\\s*$",
+							"end": "^\\s*///\\s*#endif\\s*$",
+							"decorationRenderOptions": {
+								"isWholeLine": true,
+								"backgroundColor": "rgba(100,255,100,0.05)"
+							}
 						}
-					  ]
+					]
 				}
 			}
 		}
