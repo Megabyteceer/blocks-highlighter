@@ -34,3 +34,5 @@ This extension contributes the following settings:
     }
   ]
 ```
+
+To make single line blocks - just omit "end" RegExp of make it equal ot "begin" RegExp.

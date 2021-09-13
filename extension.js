@@ -49,9 +49,8 @@ function activate(context) {
 							beginLine: i,
 							block
 						});
-						break;
-					} else if(block.endParser(lineTxt)) {
-						
+					}
+					if(!block.endParser || block.endParser(lineTxt)) {
 						let latestBegin = stack[stack.length -1];
 						if(latestBegin && (latestBegin.block === block)) {
 							stack.pop();
@@ -91,7 +90,7 @@ function activate(context) {
 			return {
 				decorationType: window.createTextEditorDecorationType(blockConfig.decorationRenderOptions),
 				beginParser: compileExp(blockConfig.begin),
-				endParser: compileExp(blockConfig.end),
+				endParser: (!blockConfig.end || blockConfig.end === blockConfig.begin) ? null : compileExp(blockConfig.end),
 				fileType: blockConfig.fileType && compileExp(blockConfig.fileType)
 			};
 		});
