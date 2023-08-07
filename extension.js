@@ -86,7 +86,14 @@ function activate(context) {
 			}
 		}
 
-		blocks = config.get("blocks").map((blockConfig) => {
+		blocks = config.get("blocks").filter((blockConfig) => {
+			if(blockConfig.decorationRenderOptions && blockConfig.begin && blockConfig.end && blockConfig.fileType) {
+				return true;
+			} else {
+				vscode.window.showWarningMessage("Invalid config entry ignored: " + JSON.stringify(blockConfig));
+				return false;
+			}
+		}).map((blockConfig) => {
 			return {
 				decorationType: window.createTextEditorDecorationType(blockConfig.decorationRenderOptions),
 				beginParser: compileExp(blockConfig.begin),
